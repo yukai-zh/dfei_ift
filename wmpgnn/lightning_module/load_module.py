@@ -30,8 +30,8 @@ def load_dfei_for_ift(configs):
         dfei_hparams["DFEI"]["cpt"] = dfei_bis_model
         configs["DFEI"] = dfei_hparams["DFEI"]
         module, ckpt = load_module(dfei_hparams, pos_weights)
-        if configs["settings"]["dfei_model_name"] != "None":
-            checkpoint = torch.load(configs["settings"]["dfei_model_name"])
+        if configs["IFT"]["dfei_model_name"] != "None":
+            checkpoint = torch.load(configs["IFT"]["dfei_model_name"])
         else:
             checkpoint = torch.load(ckpt)
         module.load_state_dict(checkpoint["state_dict"])
