@@ -127,13 +127,13 @@ class IFTLightningModule(L.LightningModule):
         else:
             outputs_ft["node_weights"] = (outputs_ft["tracks"].ft != 1).int()
         # Edge decisions
-        if self.dfei_model[0] is not None:
+        if self.dfei_model[0] is not None: # DFEI in IFT
             outputs_ft["edge_weights"] = self.dfei_model[0]._blocks[-1].edge_weights[
                 ('tracks', 'to', 'tracks')].squeeze()
-        elif "pred_y" in outputs_ft[("tracks", "tracks")]:
+        elif "pred_y" in outputs_ft[("tracks", "tracks")]: # DFEI pre IFT
             outputs_ft["edge_weights"] = outputs_ft[("tracks", "tracks")].pred_y
-        else:
-            outputs_ft["edge_weights"] = (lca_score.squeeze() != 0).int()
+        else: # truth information
+            outputs_ft["edge_weights"] = (outputs_ft[("tracks", "tracks")].y != 0).int()
 
         """if "frag" in outputs_ft["tracks"]:
             frag_selbool = outputs_ft["tracks"].frag != -1  # this does not need to exist
